@@ -1,0 +1,55 @@
+create employee table
+
+CREATE TABLE employee (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    dept_id INT NOT NULL
+);
+-------------------------------------------------------------------------------------------------------------------------------
+
+create department table
+
+CREATE TABLE department (
+    did INT PRIMARY KEY,
+    dname VARCHAR(255) NOT NULL
+);
+-------------------------------------------------------------------------------------------------------------------------------
+
+create location table and add lid using sequence 
+
+CREATE SEQUENCE location_id_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE location (
+    lid INT PRIMARY KEY DEFAULT nextval('location_id_seq'),
+    city VARCHAR(255) NOT NULL
+);
+
+This will create a sequence named "location_id_seq" which starts with the value 1 and increments by 1 for each new location. 
+The table "location" is created with two columns: "lid" and "city". 
+The "lid" column is defined as an integer, is the primary key, 
+and its default value is set to the next value of the sequence "location_id_seq". 
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+altering department table to add lid as foreign KEY
+
+ALTER TABLE department ADD COLUMN lid INT REFERENCES location(lid);
+-------------------------------------------------------------------------------------------------------------------------------
+
+joining three tables
+
+SELECT employee.name, department.dname, location.city
+FROM employee
+JOIN department ON employee.dept_id = department.did
+JOIN location ON department.lid = location.lid;
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+WITH sal_desc AS (
+  SELECT name, salary
+  FROM employee
+  ORDER BY salary DESC
+  LIMIT 2
+)
+SELECT name, salary
+FROM sal_desc;
